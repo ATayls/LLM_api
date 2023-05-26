@@ -7,6 +7,12 @@
 <body>
     <h1>Question-Answer System</h1>
     <form method="POST" action="/">
+        <label for="dropdown">Choose a Model:</label><br>
+        <select id="dropdown" name="dropdown">
+            {% for option in model_list %}
+                <option value="{{ option }}" {% if option == default_model %}selected{% endif %}>{{ option }}</option>
+            {% endfor %}
+        </select><br><br>
         <label for="question">Ask a question:</label><br>
         <input type="text" id="question" name="question"><br><br>
         <input type="submit" value="Submit">

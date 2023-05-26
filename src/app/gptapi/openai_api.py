@@ -7,9 +7,9 @@ import openai
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-def basic_question(question: str):
+def basic_question(question: str, model: str):
     response = openai.Completion.create(
-      model="text-davinci-003",
+      model=model,
       prompt=f"""
           I am a highly intelligent question answering bot. If you ask me a question that is
           rooted in truth, I will give you the answer. If you ask me a question that is nonsense
@@ -24,3 +24,11 @@ def basic_question(question: str):
     )
     result = response.choices[0].text
     return result
+
+
+def list_models():
+    """ Returns a list of model IDs """
+    response = openai.Model.list()
+    response['data'].sort(key=lambda x: x['id'])
+    id_list = [model['id'] for model in response['data']]
+    return id_list
