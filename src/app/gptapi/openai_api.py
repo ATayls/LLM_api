@@ -6,23 +6,21 @@ import openai
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-
-def basic_question(question: str, model: str):
-    response = openai.Completion.create(
-      model=model,
-      prompt=f"""
-          I am a highly intelligent question answering bot. If you ask me a question that is
-          rooted in truth, I will give you the answer. If you ask me a question that is nonsense
-          trickery, or has no clear answer, I will respond with \"Unknown\".\n\nQ: {question}? \nA:"
-      """,
-      temperature=0,
-      max_tokens=100,
-      top_p=1,
-      frequency_penalty=0.0,
-      presence_penalty=0.0,
-      stop=["\n"]
+def basic_question(question: str, system: str, model: str):
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {
+                "role": "system",
+                "content": system
+            },
+            {
+                "role": "user",
+                "content": question
+            }
+        ]
     )
-    result = response.choices[0].text
+    result = response.choices[0].message.content
     return result
 
 
